@@ -1,23 +1,49 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
+
+// sign in
+import SignIn from '../views/Auth/SignInPage.vue';
+import CreateAccount from '../components/Auth/NewAccountForm.vue';
+
+//Admin
+import AddItem from '../components/Admin/AddItem.vue'
+
+//Marketplace
+import Marketplace from '../views/Marketplace/Marketplace.vue'
+import Checkout from '../views/Checkout/Checkout.vue'
+import { component } from 'vue/types/umd';
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView,
+    name: 'Marketplace',
+    component: Marketplace,
+    meta: { title: 'Marketplace' },
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
+    path: '/checkout',
+    component: Checkout,
   },
+  {
+    path: '/signIn',
+    name: 'SignIn',
+    component: SignIn,
+    meta: { title: 'Sign In' },
+  },
+  {
+    path: '/createAccount',
+    name: 'Create Account',
+    component: CreateAccount,
+    meta: { title: 'Register' },
+  },
+  {
+    path: '/addItem',
+    name: 'Add Item',
+    component: AddItem,
+    meta: {title: 'Add Item'},
+  }
 ];
 
 const router = new VueRouter({
