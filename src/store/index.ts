@@ -18,6 +18,7 @@ export default new Vuex.Store({
     token: null,
     userRole: null,
     products: [],
+    orders:[],
     cart: [{itemid:16,name:'test',price:0, stockQuantity:0}],
     loading: false,
     error: null,
@@ -28,6 +29,12 @@ export default new Vuex.Store({
     },
     loadCart(state){
       return state.cart
+    },
+    loadProfile(state){
+      return state.profile
+    },
+    loadOrders(state){
+      return state.orders
     }
   },
   mutations: {
@@ -36,6 +43,9 @@ export default new Vuex.Store({
     },
     setProfile(state, payload){
       state.profile = payload;
+    },
+    setOrders(state,payload){
+      state.orders = payload
     },
     setLoading(state, payload) {
       state.loading = payload;
@@ -275,6 +285,61 @@ export default new Vuex.Store({
       commit("setLoading", false);
 
     },
+
+
+    /**
+     * #######################
+     * GET USER PROFILE
+     * #######################
+     */
+     loadProfile({commit}){
+      commit("setLoading", true);
+      const config = {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': `Bearer ${this.state.token}`
+        }
+      };
+      axios.get('http://localhost:3000/profile',config)
+      .then(res => res.data)
+      .then(profile => {
+        console.log("Profile",profile);
+        commit("setLoading", false);
+        commit('setProfile', profile)
+      })
+      .catch(error => {
+        commit("setLoading", false);
+        commit("setError", error);
+        console.log(error);
+      });
+    },
+
+      /**
+     * #######################
+     * GET USER ORDERS
+     * #######################
+     */
+       loadUserOrders({commit}){
+        commit("setLoading", true);
+        const config = {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Authorization': `Bearer ${this.state.token}`
+          }
+        };
+        axios.get('http://localhost:3000/orders/userOrders',config)
+        .then(res => res.data)
+        .then(orders => {
+          console.log("Orders",orders);
+          commit("setLoading", false);
+          commit('setOrders', orders)
+        })
+        .catch(error => {
+          commit("setLoading", false);
+          commit("setError", error);
+          console.log(error);
+        });
+      },
 
   },
 

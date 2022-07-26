@@ -8,6 +8,9 @@ import CreateAccount from '../components/Auth/NewAccountForm.vue';
 //Admin
 import AddItem from '../components/Admin/AddItem.vue'
 
+//profile
+import Profile from '../views/Profile/Profile.vue'
+
 //Marketplace
 import Marketplace from '../views/Marketplace/Marketplace.vue'
 import Checkout from '../views/Checkout/Checkout.vue'
@@ -43,6 +46,11 @@ const routes: Array<RouteConfig> = [
     name: 'Add Item',
     component: AddItem,
     meta: {title: 'Add Item'},
+  },
+  {
+    path: '/profile',
+    component: Profile,
+    meta: {title: 'Profile'}
   }
 ];
 

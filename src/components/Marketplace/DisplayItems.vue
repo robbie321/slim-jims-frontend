@@ -33,13 +33,6 @@ export default {
     AddToCart(product) {
       this.$store.dispatch("addToShoppingCart", product);
     },
-    computed: {
-      ShoppingCartItems() {
-        console.log(this.CartItems.length);
-
-        return this.$store.getters.loadCart;
-      },
-    },
   },
 };
 </script>
@@ -53,28 +46,6 @@ export default {
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
-
-/* .griditem {
-  display: flex;
-  flex-direction: column;
-  background-color: rgb(255, 255, 255);
-  text-align: center;
-  font-size: 24px;
-  color: rgb(0, 0, 0);
-  height: 100%;
-  width: 100%;
-  border-radius: 4px;
-  transition: all 500ms;
-  overflow: hidden;
-
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.griditem:hover {
-  cursor: pointer;
-} */
 
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -99,12 +70,13 @@ h1 {
   border: none;
   outline: 0;
   padding: 12px;
-  color: white;
+  color: #cd9bf0;
+  font-weight: bold;
   background-color: #000;
   text-align: center;
   cursor: pointer;
   width: 100%;
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .card button:hover {

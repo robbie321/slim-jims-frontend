@@ -8,10 +8,16 @@ import accountSignIn from './components/Auth/AccountSignIn.vue';
 import DisplayItems from './components/Marketplace/DisplayItems.vue'
 import shoppingCart from './components/Marketplace/ShoppingCart.vue'
 import Checkout from './components/Checkout/CheckoutForm.vue'
+import profile from './components/Profile/ProfileForm.vue'
+import Orders from './components/Profile/Orders.vue'
 Vue.config.productionTip = false;
 
 //auth
 Vue.component('AccountSignIn', accountSignIn);
+
+//user profile
+Vue.component('Profile', profile);
+Vue.component('Orders', Orders);
 
 //marketplace
 Vue.component('DisplayItems', DisplayItems)

@@ -6,9 +6,19 @@
       </div>
       <v-spacer></v-spacer>
 
+      <div id="shop">
+        <v-btn href="/" text
+          ><span class="mr-2">Shop</span>
+          <v-icon>mdi-shopping</v-icon>
+        </v-btn>
+      </div>
+
       <div class="menu-links">
         <div id="user">
-          <v-btn v-show="this.$store.state.userRole == 'user' && this.$store.state.signedIn == true"
+          <v-btn
+            text
+            v-show="this.$store.state.userRole == 'user' && this.$store.state.signedIn == true"
+            href="/profile"
             ><span class="mr-2">Profile</span>
             <v-icon>mdi-account</v-icon>
           </v-btn>
@@ -99,6 +109,19 @@ export default Vue.extend({
 <style>
 .v-main__wrap {
   background-color: #e8e8e6;
-  color: 000;
+  color: #000;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-color: black;
+  box-sizing: border-box;
+  background-color: white;
+  font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
 }
 </style>

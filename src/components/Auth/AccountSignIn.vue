@@ -77,18 +77,6 @@ hr {
 .admin {
   text-decoration: underline;
 }
-input[type="text"],
-input[type="password"] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-color: black;
-  box-sizing: border-box;
-  background-color: white;
-  font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
-}
 
 .text {
   text-align: center;

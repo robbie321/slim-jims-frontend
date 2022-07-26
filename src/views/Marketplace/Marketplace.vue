@@ -15,18 +15,11 @@ export default {
     products: [],
   }),
   beforeCreate() {
-    let payload = {
-      skip: 0,
-      take: 9,
-    };
-    this.$store.dispatch("loadProducts", payload);
+    this.$store.dispatch("loadProducts");
   },
   computed: {
     Products() {
       return this.$store.getters.loadProducts;
-    },
-    loadMoreProducts() {
-      this.$store.dispatch("loadProducts");
     },
   },
 };
