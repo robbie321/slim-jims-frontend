@@ -2,9 +2,6 @@
   <div class="wrapper">
     <div v-if="!signedIn" class="auth signin">
       <!-- SIGN IN & REGISTER HERE -->
-      <div>
-        <input type="text" />
-      </div>
       <AccountSignIn />
     </div>
     <div v-if="signedIn" class="center">

@@ -9,7 +9,12 @@
           <div class="row mt-2">
             <div class="col-md-6">
               <label class="labels">Name</label
-              ><input type="text" class="form-control" :placeholder="profile.name" value="" />
+              ><input
+                type="text"
+                class="form-control"
+                :placeholder="profile.name"
+                :value="profile.name"
+              />
             </div>
           </div>
           <div class="row mt-3">
@@ -19,7 +24,7 @@
                 type="text"
                 class="form-control"
                 :placeholder="profile.phoneNumber"
-                value=""
+                :value="profile.phoneNumber"
               />
             </div>
             <div class="col-md-12">
@@ -28,7 +33,7 @@
                 type="text"
                 class="form-control"
                 :placeholder="profile.firstAddress"
-                value=""
+                :value="profile.firstAddress"
               />
             </div>
             <div class="col-md-12">
@@ -37,20 +42,35 @@
                 type="text"
                 class="form-control"
                 :placeholder="profile.secondAddress"
-                value=""
+                :value="profile.secondAddress"
               />
             </div>
             <div class="col-md-12">
               <label class="labels">Eircode</label
-              ><input type="text" class="form-control" :placeholder="profile.eircode" value="" />
+              ><input
+                type="text"
+                class="form-control"
+                :placeholder="profile.eircode"
+                :value="profile.eircode"
+              />
             </div>
             <div class="col-md-12">
               <label class="labels">County</label
-              ><input type="text" class="form-control" :placeholder="profile.county" value="" />
+              ><input
+                type="text"
+                class="form-control"
+                :placeholder="profile.county"
+                :value="profile.county"
+              />
             </div>
             <div class="col-md-12">
               <label class="labels">Email</label
-              ><input type="text" class="form-control" :placeholder="profile.email" value="" />
+              ><input
+                type="text"
+                class="form-control"
+                :placeholder="profile.email"
+                :value="profile.phoneNumber"
+              />
             </div>
           </div>
           <div class="mt-5 text-center">

@@ -1,5 +1,5 @@
 <template>
-  <div class="center">
+  <div class="">
     <div>
       <div style="background-color: rgba(255, 0, 0, 0.3); color: red">
         <div v-if="error" class="wrapper" style="padding-top: 3%; padding-bottom: 1.5%">
@@ -65,13 +65,6 @@ export default {
 <style scoped>
 hr {
   margin-bottom: 15px;
-}
-.center {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  padding: 10px;
 }
 
 .admin {

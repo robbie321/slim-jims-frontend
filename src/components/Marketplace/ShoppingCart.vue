@@ -38,11 +38,9 @@ export default {
       return this.$store.getters.loadCart;
     },
 
-    filteredCartItems(val) {
-      if (this.CartItems().indexOf(val.itemid) === -1) {
-        items.push(val);
-        return val.itemid;
-      }
+    IsCartEmpty() {
+      if (this.CartItems == null) return false;
+      else return false;
     },
   },
 

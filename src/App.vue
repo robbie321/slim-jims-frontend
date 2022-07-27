@@ -2,7 +2,7 @@
   <v-app class="container">
     <v-app-bar app color="black" dark>
       <div class="logo">
-        <h1 style="color: #cd9bf0">SLIM JIMMY'S</h1>
+        <h1 class="heading">SLIM JIMMY'S</h1>
       </div>
       <v-spacer></v-spacer>
 
@@ -113,7 +113,9 @@ export default Vue.extend({
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="number"],
+input[type="file"] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -123,5 +125,10 @@ input[type="password"] {
   box-sizing: border-box;
   background-color: white;
   font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
+}
+
+.heading {
+  color: #cd9bf0;
+  font-size: 1em;
 }
 </style>

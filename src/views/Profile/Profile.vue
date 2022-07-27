@@ -11,7 +11,8 @@
       <div id="profile">
         <Profile v-bind:profile="Profile" />
       </div>
-
+      <hr />
+      <h1>Orders</h1>
       <div id="orders">
         <Orders v-bind:orders="Orders" />
       </div>
