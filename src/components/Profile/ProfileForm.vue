@@ -12,8 +12,8 @@
               ><input
                 type="text"
                 class="form-control"
+                v-model="payload.named"
                 :placeholder="profile.name"
-                :value="profile.name"
               />
             </div>
           </div>
@@ -21,10 +21,10 @@
             <div class="col-md-12">
               <label class="labels">Mobile Number</label
               ><input
-                type="text"
+                type="number"
                 class="form-control"
                 :placeholder="profile.phoneNumber"
-                :value="profile.phoneNumber"
+                v-model="payload.mobile"
               />
             </div>
             <div class="col-md-12">
@@ -33,7 +33,7 @@
                 type="text"
                 class="form-control"
                 :placeholder="profile.firstAddress"
-                :value="profile.firstAddress"
+                v-model="payload.addressLineOne"
               />
             </div>
             <div class="col-md-12">
@@ -42,7 +42,7 @@
                 type="text"
                 class="form-control"
                 :placeholder="profile.secondAddress"
-                :value="profile.secondAddress"
+                v-model="payload.addressLineTwo"
               />
             </div>
             <div class="col-md-12">
@@ -51,7 +51,7 @@
                 type="text"
                 class="form-control"
                 :placeholder="profile.eircode"
-                :value="profile.eircode"
+                v-model="payload.eircode"
               />
             </div>
             <div class="col-md-12">
@@ -60,7 +60,7 @@
                 type="text"
                 class="form-control"
                 :placeholder="profile.county"
-                :value="profile.county"
+                v-model="payload.county"
               />
             </div>
             <div class="col-md-12">
@@ -69,12 +69,15 @@
                 type="text"
                 class="form-control"
                 :placeholder="profile.email"
-                :value="profile.phoneNumber"
+                :value="profile.email"
+                disabled
               />
             </div>
           </div>
           <div class="mt-5 text-center">
-            <v-btn color="black" dark class="save-btn" type="button">Save Profile</v-btn>
+            <v-btn color="black" dark class="save-btn" type="button" @click="updateProfile()"
+              >Save Profile</v-btn
+            >
           </div>
         </div>
       </div>
@@ -87,9 +90,25 @@ export default {
   props: {
     profile: Object,
   },
-  data: () => ({}),
-  computed: {
-    User() {},
+
+  data: function () {
+    return {
+      // if the value is empty, replace it with the current profile value
+      payload: {
+        named: "" === "" ? this.profile.name : named,
+        mobile: "" === "" ? this.profile.phoneNumber : mobile,
+        addressLineOne: "" === "" ? this.profile.firstAddress : addressLineOne,
+        addressLineTwo: "" === "" ? this.profile.secondAddress : addressLineTwo,
+        county: "" === "" ? this.profile.county : county,
+        eircode: "" === "" ? this.profile.eircode : eircode,
+      },
+    };
+  },
+
+  methods: {
+    updateProfile() {
+      this.$store.dispatch("updateProfile", this.payload);
+    },
   },
 };
 </script>

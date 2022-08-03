@@ -1,51 +1,28 @@
 <template>
   <v-app class="container">
-    <v-app-bar app color="black" dark>
-      <div class="logo">
-        <h1 class="heading">SLIM JIMMY'S</h1>
-      </div>
-      <v-spacer></v-spacer>
-
-      <div id="shop">
-        <v-btn href="/" text
-          ><span class="mr-2">Shop</span>
-          <v-icon>mdi-shopping</v-icon>
+    <div class="nav-container hidden-on-xs">
+      <div class="inline">
+        <v-btn
+          class="nav-buttons"
+          text
+          v-for="item in menuItems"
+          :key="item.id"
+          router
+          :to="item.link"
+          dark
+        >
+          {{ item.title }}
         </v-btn>
       </div>
+    </div>
 
-      <div class="menu-links">
-        <div id="user">
-          <v-btn
-            text
-            v-show="this.$store.state.userRole == 'user' && this.$store.state.signedIn == true"
-            href="/profile"
-            ><span class="mr-2">Profile</span>
-            <v-icon>mdi-account</v-icon>
-          </v-btn>
-        </div>
-        <div id="admin">
-          <v-btn v-show="this.$store.state.userRole == 'admin'" href="/addItem" text>
-            <span class="mr-2">Add Item</span>
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
-        </div>
-      </div>
-
-      <div class="auth-links">
-        <div id="signedIn">
-          <v-btn v-show="signedIn" href="/signIn" @click="logout()" text>
-            <span class="mr-2">Logout</span>
-            <v-icon>mdi-open-in-new</v-icon>
-          </v-btn>
-        </div>
-        <div id="signedOut">
-          <v-btn v-show="!signedIn" href="/signIn" text>
-            <span class="mr-2">Sign In</span>
-            <v-icon>mdi-open-in-new</v-icon>
-          </v-btn>
-        </div>
-      </div>
-    </v-app-bar>
+    <v-bottom-navigation class="hidden-on-xl" fixed>
+      <v-btn text v-for="item in menuItems" dark :key="item.id" router :to="item.link">
+        <span>
+          <v-icon>mdi-{{ item.icon }}</v-icon>
+        </span>
+      </v-btn>
+    </v-bottom-navigation>
 
     <v-main>
       <router-view />
@@ -66,34 +43,26 @@ export default Vue.extend({
     signedIn() {
       return this.$store.state.signedIn;
     },
-    logout() {
-      this.$store.dispatch("logout");
-    },
+
     menuItems() {
       let menuItems = [
-        { icon: "lock", title: "Home", link: "/" },
-        { icon: "lock", title: "About", link: "/about" },
-        { icon: "lock", title: "Shop", link: "/marketplace" },
-        { icon: "lock", title: "Blog", link: "/blog" },
-        { icon: "lock", title: "login", link: "/signin" },
+        { icon: "lock", title: "login", link: "/signIn" },
+        { icon: "lock", title: "Shop", link: "/" },
       ];
 
       if (this.signedIn && this.userRole == "user") {
         menuItems = [
-          { icon: "home", title: "Home", link: "/" },
-          { icon: "donate", title: "Donate", link: "/donate" },
-          { icon: "chevron-up", title: "Upcycle", link: "/upcycle-choice" },
-          { icon: "store", title: "Shop", link: "/marketplace" },
-          { icon: "lock", title: "About", link: "/about" },
-          { icon: "lock", title: "Blog", link: "/blog" },
-          { icon: "address-card", title: "Profile", link: "/profile" },
+          { icon: "home", title: "SHOP", link: "/" },
+          { icon: "cart", title: "Cart", link: "/cart" },
+          { icon: "face-man-profile", title: "Profile", link: "/profile" },
+          { icon: "logout", title: "logout", link: "/logout" },
         ];
       }
 
       if (this.signedIn && this.userRole == "admin") {
         menuItems = [
           { icon: "home", title: "Home", link: "/" },
-          { icon: "donate", title: "Donate", link: "/donate" },
+          { icon: "donate", title: "Add Item", link: "/addItem" },
           { icon: "chevron-up", title: "Upcycle", link: "/upcycle-choice" },
           { icon: "store", title: "Shop", link: "/marketplace" },
           // { icon: "user-tie", title: "Profile", link: "/profile" },
@@ -102,6 +71,15 @@ export default Vue.extend({
       }
 
       return menuItems;
+    },
+    userRole() {
+      return this.$store.state.userRole;
+    },
+  },
+
+  methods: {
+    logout() {
+      this.$store.dispatch("logout");
     },
   },
 });
@@ -130,5 +108,57 @@ input[type="file"] {
 .heading {
   color: #cd9bf0;
   font-size: 1em;
+}
+
+.hide-on-lg {
+  visibility: show;
+  font-family: "Comfortaa", cursive;
+}
+
+.hidden-on-xl {
+  visibility: hidden;
+}
+
+@media screen and (min-width: 768px) {
+  .hide-on-lg {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .hidden-on-xl {
+    visibility: visible;
+  }
+}
+
+.hidden-on-xs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  visibility: show;
+}
+
+@media screen and (max-width: 767px) {
+  .hidden-on-xs {
+    display: none;
+    visibility: hidden;
+  }
+}
+.inline {
+  display: inline-block;
+}
+.nav-container {
+  padding: 20px 50px 20px 50px;
+  background-color: #000;
+  text-decoration: none;
+  /* padding: 10px; */
+}
+.nav-buttons {
+  float: right;
+  height: 25px;
+}
+
+.icon {
+  color: #000;
 }
 </style>

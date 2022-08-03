@@ -2,27 +2,32 @@
   <div>
     <div class="col-25">
       <div class="container">
-        <h4 class="primary-txt">
-          Cart items
-          <span class="price" style="color: black">
-            <i class="tertiary-txt fa fa-shopping-cart"></i>
-            <b class="primary-txt" id="cartNo">{{ CartItems.length - 1 }}</b>
-          </span>
-        </h4>
-        <div id="cart-items" class="row" v-for="item in CartItems" :key="item.itemid">
-          <div class="col-50">{{ item.name }}</div>
-          <div class="col-50" style="text-align: right">€{{ item.price }}</div>
+        <div v-if="!this.$store.state.signedIn">
+          <h3 class="text">Please sign in to view your shopping cart</h3>
         </div>
+        <div v-else>
+          <h4 class="primary-txt">
+            Cart items
+            <span class="price" style="color: black">
+              <i class="tertiary-txt fa fa-shopping-cart"></i>
+              <b class="primary-txt" id="cartNo">{{ CartItems.length - 1 }}</b>
+            </span>
+          </h4>
+          <div id="cart-items" class="row" v-for="item in CartItems" :key="item.itemid">
+            <div class="col-50">{{ item.name }}</div>
+            <div class="col-50" style="text-align: right">€{{ item.price }}</div>
+          </div>
 
-        <hr />
-        <p>
-          Total
-          <span class="price" id="total" style="color: black"
-            ><b>€{{ CartTotal() }}</b></span
-          >
-        </p>
+          <hr />
+          <p>
+            Total
+            <span class="price" id="total" style="color: black"
+              ><b>€{{ CartTotal() }}</b></span
+            >
+          </p>
 
-        <v-btn class="checkoutBtn" to="/checkout" color="black" dark>Proceed to checkout</v-btn>
+          <v-btn class="checkoutBtn" to="/checkout" color="black" dark>Proceed to checkout</v-btn>
+        </div>
       </div>
     </div>
   </div>
@@ -100,6 +105,7 @@ export default {
   padding: 5px 20px 15px 20px;
   border: 1px solid #000000;
   border-radius: 3px;
+  font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
 }
 
 label {
@@ -115,6 +121,7 @@ label {
 
 .checkoutBtn {
   width: 100%;
+  font-family: sans-serif;
 }
 
 span.price {
@@ -124,6 +131,7 @@ span.price {
 
 .text {
   text-align: center;
+  font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
 }
 
 .banner {

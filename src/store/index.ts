@@ -35,6 +35,12 @@ export default new Vuex.Store({
     },
     loadOrders(state){
       return state.orders
+    },
+    signedIn(state){
+      return state.signedIn
+    },
+    error(state) {
+      return state.error;
     }
   },
   mutations: {
@@ -86,8 +92,9 @@ export default new Vuex.Store({
     commit("setLoading", true);
     commit("clearError");
 
+
     //call to backend login route
-    axios.post('http://localhost:3000/auth/loginJWT', payload).then(user => {
+    axios.post('http://localhost:3000/auth/login', payload).then(user => {
 
       //set response data to newuser
       const newUser = user.data;
@@ -101,8 +108,10 @@ export default new Vuex.Store({
 
       //if message is not true, show error
       if(newUser.message != 'login successful'){
-        commit('setError', newUser.message);
+        commit("setError", newUser.message);
+        // commit('setError', newUser.message);
         commit("setLoading", false);
+
       } else{
         //log user info
         console.log(newUser);
@@ -116,6 +125,8 @@ export default new Vuex.Store({
           router.push("/")
 
       }
+
+
     })
   },
 
@@ -142,15 +153,21 @@ export default new Vuex.Store({
         //log status
         console.log("Status",success)
 
-        //sign user in
-        this.dispatch('signUserIn', {
-          email: payload.email,
-          password: payload.password,
-        })
+        if(success){
+          //sign user in
+          this.dispatch('signUserIn', {
+            email: payload.email,
+            password: payload.password,
+          })
 
-        //set loading to false and push to home page
-        commit("setLoading", false);
-        router.push('/')
+          //set loading to false and push to home page
+          commit("setLoading", false);
+          router.push('/')
+        }else{
+          let payload = 'Incomplete form, please try again'
+          commit("setError", payload);
+        }
+
       })
       ///sendgrid email
       // .then(res => {
@@ -180,13 +197,18 @@ export default new Vuex.Store({
      * ######
      */
      logout({commit}){
-      localStorage.removeItem("session");
+      // localStorage.removeItem("session");
+      // localStorage.removeItem("vuex");
       //clear session
-      sessionStorage.clear();
+      // sessionStorage.removeItem('vuex')
+      let t = sessionStorage.getItem('vuex')
+      console.log(t);
+      sessionStorage.setItem('vuex', '');
+
       //set signedIn to false
-        commit('setSignIn', false);
+      commit('setSignIn', false);
         //push to homepage
-        router.push("/")
+        // router.push("/signIn")
     },
 
     /**
@@ -262,29 +284,7 @@ export default new Vuex.Store({
       })
     },
 
-    createOrder({commit}){
-      const config = {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Authorization': `Bearer ${this.state.token}`
-        }
-      };
-      commit("setLoading", true);
 
-      const items = this.getters.loadCart;
-
-      console.log(items);
-
-
-      axios.post("http://localhost:3000/orders/createOrder",
-        {items}, config
-      ).then(res => {
-        console.log(res.data);
-      })
-
-      commit("setLoading", false);
-
-    },
 
 
     /**
@@ -314,6 +314,32 @@ export default new Vuex.Store({
       });
     },
 
+        /**
+     * #######################
+     * UPDATE USER PROFILE
+     * #######################
+     */
+         updateProfile({commit}, payload){
+          commit("setLoading", true);
+          const config = {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Authorization': `Bearer ${this.state.token}`
+            }
+          };
+
+          axios.put('http://localhost:3000/users/updateProfileDetails',payload,config)
+          .then(res => {
+            console.log(res.data);
+          })
+
+          commit("setLoading", false);
+
+          console.log("Updated", payload);
+
+
+        },
+
       /**
      * #######################
      * GET USER ORDERS
@@ -340,6 +366,40 @@ export default new Vuex.Store({
           console.log(error);
         });
       },
+
+           /**
+     * #######################
+     * CREATE AN ORDERS
+     * #######################
+     */
+      createOrder({commit}){
+        const config = {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Authorization': `Bearer ${this.state.token}`
+          }
+        };
+        commit("setLoading", true);
+
+        const items = this.getters.loadCart;
+
+        console.log(items);
+
+
+        axios.post("http://localhost:3000/orders/createOrder",
+          {items}, config
+        ).then(res => {
+          console.log(res.data);
+        })
+
+        commit("setLoading", false);
+
+      },
+
+
+      error({commit}, payload){
+
+      }
 
   },
 

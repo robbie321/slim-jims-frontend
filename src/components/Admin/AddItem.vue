@@ -127,6 +127,10 @@ export default {
 };
 </script>
 <style scoped>
+.wrapper {
+  width: 100%;
+  height: 100%;
+}
 .border {
   padding: 3%;
   border: 1px;

@@ -24,6 +24,10 @@ Vue.component('DisplayItems', DisplayItems)
 Vue.component('ShoppingCart', shoppingCart)
 Vue.component("CheckoutForm", Checkout)
 
+Vue.filter('uppercase', function (value: any) {
+	return value.toUpperCase()
+})
+
 new Vue({
   router,
   store,

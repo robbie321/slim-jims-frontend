@@ -1,27 +1,17 @@
 <template>
   <div>
-    <div style="margin-bottom: 5%"></div>
-
     <div class="container">
-      <div class="input">
-        <h1 style="text-align: center">Create account</h1>
+      <h1 style="text-align: center">CREATE ACCOUNT</h1>
 
+      <hr />
+      <div class="input">
         <div class="">
           <h2 class="small">Personal Info</h2>
         </div>
 
         <input class="input" placeholder="Full name" v-model="name" type="text" />
-        <!-- <v-text-field dense v-model="name" label="Full Name"></v-text-field> -->
 
         <input class="input" type="text" v-model="email" placeholder="Email" />
-        <!-- <v-text-field
-            v-model="email"
-            class="text-field"
-            label="Email"
-            dense
-            outlined
-            required
-          ></v-text-field> -->
         <span class="help is-danger" v-if="emailErrorCheck">{{ emailErrorCheck }}</span>
 
         <div class="">
@@ -55,19 +45,7 @@
         <input class="input" type="text" placeholder="Address line two" v-model="addressTwo" />
         <span class="help is-danger" v-if="addressError2">{{ addressError2 }}</span>
 
-        <!-- <input class="input" type="text" v-model="county" placeholder="County" /> -->
-        <select
-          name="county"
-          id="county"
-          placeholder="County"
-          class="selector"
-          dense
-          :items="county"
-          v-model="county"
-          outlined
-        ></select>
-
-        <v-select :items="county" outlined></v-select>
+        <input class="input" type="text" v-model="county" placeholder="County" />
         <span class="help is-danger" v-if="countyError">{{ countyError }}</span>
 
         <input class="input" type="text" placeholder="Eircode" v-model="eircode" />
@@ -108,7 +86,8 @@ export default {
     confirmPassword: null,
     addressOne: "",
     addressTwo: "",
-    county: [
+    county: "",
+    county2: [
       "Antrim",
       "Armagh",
       "Carlow",
@@ -239,46 +218,75 @@ export default {
 </script>
 
 <style scoped>
-.small {
-  font-size: 2.5rem;
-}
-.container {
-  justify-content: center;
-  align-items: center;
-  width: 80%;
-}
-/* .card {
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-} */
-
-/* @media screen and (min-width: 850px) {
-  .card {
-    width: 65vw;
-  }
+hr {
+  margin-bottom: 15px;
 }
 
-@media screen and (min-width: 1220px) {
-  .card {
-    width: 50vw;
-  }
-} */
-/* .signin {
-  width: 100%;
-} */
+.admin {
+  text-decoration: underline;
+}
 
-.input[type="text"],
-.input[type="password"] {
-  width: 49%;
-  padding: 12px 20px;
-  margin: 2px;
-  box-sizing: border-box;
-  outline-color: black;
-  border: 1px solid black;
-  border-radius: 4px;
-  background-color: white;
+.text {
+  text-align: center;
   font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
+}
+
+.text-heading {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+button {
+  background-color: #000000;
+  color: #cd9bf0;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  font-weight: bold;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.signup {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #000000;
+}
+
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+.container {
+  padding: 80px 250px 80px 250px;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* Change styles for span and signup button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+    display: block;
+    float: none;
+  }
+  .signup {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    padding: 10px 50px 10px 50px;
+  }
 }
 
 div[aria-required="true"].v-text-field .v-label::after {

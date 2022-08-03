@@ -54,6 +54,7 @@ export default {
 
   .left {
     width: 100%;
+    padding-bottom: 50px;
   }
 }
 </style>
