@@ -10,10 +10,12 @@
           <div class="col-25">
             {{ item.name }}
           </div>
-
-          <div class="col-25">€{{ item.price }}</div>
         </div>
       </div>
+      <div class="inline col-25">
+        <span class="bold">Total: €</span> {{ order.totalPrice / 100 }}
+      </div>
+
       <hr />
 
       <br />
@@ -52,5 +54,13 @@ export default {
 .col-50,
 .col-75 {
   padding: 0 16px;
+}
+
+.inline {
+  float: right;
+}
+
+.bold {
+  font-weight: bold;
 }
 </style>

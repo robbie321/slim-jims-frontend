@@ -1,12 +1,9 @@
 <template>
   <div class="">
     <div>
-      <div style="background-color: rgba(255, 0, 0, 0.3); color: red">
-        <div v-if="error" class="wrapper" style="padding-top: 3%; padding-bottom: 1.5%">
-          <h3>Oops!</h3>
-          <h3>{{ error }}</h3>
-        </div>
-      </div>
+      <v-alert v-show="error" dismissible prominent shaped type="error" style="margin-top: 20px">{{
+        error
+      }}</v-alert>
     </div>
     <div class="container">
       <p class="text-heading">LOG IN</p>
@@ -17,9 +14,7 @@
       <!-- <label for="psw"><b>Password</b></label> -->
       <input type="password" placeholder="Enter Password" v-model="password" name="psw" required />
 
-      <button type="submit" @click="signIn()">LOGIN</button>
-      <!-- <label> <input type="checkbox" checked="checked" name="remember" /> Remember me </label> -->
-      <!-- <label class="admin" @click="$router.push('/adminPortal')" for="psw">Admin Portal</label> -->
+      <button type="submit" @click="signIn">LOGIN</button>
     </div>
 
     <p class="text">Dont have an account?</p>
@@ -53,10 +48,6 @@ export default {
         email: this.email,
         password: this.password,
       });
-    },
-
-    createAccount() {
-      router = "";
     },
   },
 };

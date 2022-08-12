@@ -80,6 +80,10 @@
             >
           </div>
         </div>
+
+        <v-alert v-show="savedProfile" dismissible prominent shaped type="success"
+          >Your profile has now been updated</v-alert
+        >
       </div>
     </div>
   </div>
@@ -87,27 +91,43 @@
 
 <script>
 export default {
-  props: {
-    profile: Object,
-  },
-
   data: function () {
     return {
-      // if the value is empty, replace it with the current profile value
       payload: {
-        named: "" === "" ? this.profile.name : named,
-        mobile: "" === "" ? this.profile.phoneNumber : mobile,
-        addressLineOne: "" === "" ? this.profile.firstAddress : addressLineOne,
-        addressLineTwo: "" === "" ? this.profile.secondAddress : addressLineTwo,
-        county: "" === "" ? this.profile.county : county,
-        eircode: "" === "" ? this.profile.eircode : eircode,
+        named: "",
+        mobile: "",
+        addressLineOne: "",
+        addressLineTwo: "",
+        eircode: "",
+        county: "",
       },
+      savedProfile: false,
     };
+  },
+
+  computed: {
+    profile() {
+      return this.$store.getters.loadProfile;
+    },
   },
 
   methods: {
     updateProfile() {
+      this.checkInput();
       this.$store.dispatch("updateProfile", this.payload);
+      this.savedProfile = true;
+    },
+
+    checkInput() {
+      // if the value is empty, replace it with the current profile value
+      if (this.payload.named == "") this.payload.named = this.profile.name;
+      if (this.payload.mobile == "") this.payload.mobile = this.profile.phoneNumber;
+      if (this.payload.addressLineOne == "")
+        this.payload.addressLineOne = this.profile.firstAddress;
+      if (this.payload.addressLineTwo == "")
+        this.payload.addressLineTwo = this.profile.secondAddress;
+      if (this.payload.county == "") this.payload.county = this.profile.county;
+      if (this.payload.eircode == "") this.payload.eircode = this.profile.eircode;
     },
   },
 };

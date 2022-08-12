@@ -26,10 +26,9 @@ export default {
     };
   },
 
-  //   beforeCreate() {
-  //     sessionStorage.removeItem("vuex");
-  //     localStorage.removeItem("session");
-  //   },
+  beforeCreate() {
+    this.$store.state.error = null;
+  },
 
   computed: {
     signedIn() {

@@ -3,7 +3,10 @@
     <div class="wrapper">
       <!-- this html was taken from W3 Schools
         I added by own id's and divs to make it fit my cart items from local storage
-    https://www.w3schools.com/howto/howto_css_checkout_form.asp-->
+      https://www.w3schools.com/howto/howto_css_checkout_form.asp-->
+      <v-alert v-show="error" dismissible prominent shaped type="error" style="margin-top: 20px">{{
+        error
+      }}</v-alert>
       <div class="row" id="card">
         <div class="col-75">
           <div class="container">
@@ -11,8 +14,20 @@
               <div class="row">
                 <div class="col-50">
                   <h3 class="primary-txt">Billing Address</h3>
+
+                  <!-- Name -->
                   <label for="fname"><i class="tertiary-txt fas fa-user"></i> Full Name</label>
-                  <input type="text" id="fname" name="firstname" placeholder="Robbie Malone" />
+                  <input
+                    type="text"
+                    id="fname"
+                    name="firstname"
+                    placeholder="Robbie Malone"
+                    v-model="name"
+                  />
+                  <!-- Name error -->
+                  <span class="help is-danger" v-if="nameErrorCheck">{{ nameErrorCheck }}</span>
+
+                  <!-- Email -->
                   <label for="email"><i class="tertiary-txt fa fa-envelope"></i> Email</label>
                   <input
                     type="text"
@@ -21,6 +36,10 @@
                     v-model="email"
                     placeholder="john@example.com"
                   />
+                  <!-- Email error -->
+                  <span class="help is-danger" v-if="emailErrorCheck">{{ emailErrorCheck }}</span>
+
+                  <!-- Address -->
                   <label for="adr"><i class="tertiary-txt far fa-address-card"></i> Address</label>
                   <input
                     type="text"
@@ -29,15 +48,24 @@
                     v-model="address.line1"
                     placeholder="21 John Street"
                   />
+                  <!-- Address error -->
+                  <span class="help is-danger" v-if="addressErrorCheck">{{
+                    addressErrorCheck
+                  }}</span>
+
+                  <!-- City -->
                   <label for="city"><i class="tertiary-txt fas fa-city"></i> City</label>
                   <input
                     type="text"
                     id="city"
                     name="city"
-                    v-model="address.city"
+                    v-model="address.county"
                     placeholder="Co. Kilkenny"
                   />
+                  <!-- City error -->
+                  <span class="help is-danger" v-if="cityErrorCheck">{{ cityErrorCheck }}</span>
 
+                  <!-- Eircode -->
                   <div class="row">
                     <div class="col-50">
                       <label for="Eircode">Eircode</label>
@@ -48,6 +76,10 @@
                         v-model="address.eircode"
                         placeholder="R95 0000"
                       />
+                      <!-- Ericode error -->
+                      <span class="help is-danger" v-if="eircodeErrorCheck">{{
+                        eircodeErrorCheck
+                      }}</span>
                     </div>
                   </div>
                 </div>
@@ -55,6 +87,7 @@
                 <div class="col-50">
                   <h3 class="primary-txt">Payment</h3>
 
+                  <!-- Card Name -->
                   <label for="cname">Name on Card</label>
                   <input
                     type="text"
@@ -63,43 +96,65 @@
                     v-model="cardName"
                     placeholder="Robbie Malone"
                   />
+                  <!-- Card name error -->
+                  <span class="help is-danger" v-if="cardNameErrorCheck">{{
+                    cardNameErrorCheck
+                  }}</span>
+
+                  <!-- Card Number -->
                   <label for="ccnum">Credit card number</label>
                   <input
                     type="text"
                     id="ccnum"
                     name="cardnumber"
                     v-model="card.number"
-                    placeholder="1111-2222-3333-4444"
+                    placeholder="4242-4242-4242-4242"
                   />
-                  <label for="expmonth">Exp Date</label>
+                  <!-- Card number error -->
+                  <span class="help is-danger" v-if="cardNumberErrorCheck">{{
+                    cardNumberErrorCheck
+                  }}</span>
+
+                  <!-- Exp month -->
+                  <label for="expmonth">Exp month</label>
                   <input
                     type="text"
                     id="expmonth"
                     name="expmonth"
                     v-model="card.exp_month"
-                    placeholder="DD"
+                    placeholder="12"
                   />
+                  <!-- ExpMon Error -->
+                  <span class="help is-danger" v-if="expmonErrorCheck">{{ expmonErrorCheck }}</span>
 
-                  <label for="expyear">Exp Date</label>
+                  <!-- Exp Year -->
+                  <label for="expyear">Exp Year</label>
                   <input
                     type="text"
                     id="expyear"
                     name="expyear"
                     v-model="card.exp_year"
-                    placeholder="YY"
+                    placeholder="34"
                   />
+                  <!-- ExpYear Error -->
+                  <span class="help is-danger" v-if="expyearErrorCheck">{{
+                    expyearErrorCheck
+                  }}</span>
 
+                  <!-- Security pin -->
                   <div class="row">
                     <div class="col-50">
-                      <label for="cvv">CVV</label>
+                      <label for="cvv">CVC</label>
                       <input type="text" id="cvv" name="cvv" v-model="card.cvc" placeholder="000" />
+                      <!-- CVV Error -->
+                      <span class="help is-danger" v-if="cvvErrorCheck">{{ cvvErrorCheck }}</span>
                     </div>
                   </div>
                 </div>
               </div>
 
               <button
-                @click.prevent="createToken()"
+                @click.prevent="validate()"
                 id="checkout-button"
                 type="submit"
                 class="secondary-bg"
@@ -141,6 +196,7 @@
 export default {
   data: () => ({
     items: [],
+    name: "",
     stripeKey:
       "pk_test_51LNMHmLRGR9Go4BFu0paMus4he7l2EbwSQm8IG5Iu6RKHeIynBGiZidbzA0r1NAdDtzAcmz5WqX4y5TaxGGJnfhT00tC5GXrvK",
     email: "",
@@ -158,7 +214,24 @@ export default {
       county: "",
       eircode: "",
     },
+
+    // error check
+    nameErrorCheck: null,
+    emailErrorCheck: null,
+    addressErrorCheck: null,
+    cityErrorCheck: null,
+    eircodeErrorCheck: null,
+    cardNameErrorCheck: null,
+    cardNumberErrorCheck: null,
+    expmonErrorCheck: null,
+    expyearErrorCheck: null,
+    cvvErrorCheck: null,
   }),
+
+  beforeCreate() {
+    this.$store.state.error = null;
+  },
+
   computed: {
     CartItems() {
       return this.$store.getters.loadCart;
@@ -169,6 +242,9 @@ export default {
         items.push(val);
         return val.itemid;
       }
+    },
+    error() {
+      return (this.err = this.$store.getters.error);
     },
   },
 
@@ -195,7 +271,10 @@ export default {
         this.cardCheckErrorMessage = response.error.message;
         this.cardCheckError = true;
 
-        console.error(response.error);
+        //set state error
+        this.$store.state.error = response.error.message;
+
+        console.error("CARD ERROR", response.error);
       } else {
         // token to create a charge on the server
         var token_from_stripe = response.id;
@@ -207,11 +286,75 @@ export default {
           address: this.address,
           token_from_stripe: token_from_stripe,
         };
-        console.log("Token", token_from_stripe, "Response", response, "Request", request);
+
+        //reset cart
+        this.$store.state.cart = [{ itemid: 16, name: "test", price: 0, stockQuantity: 0 }];
 
         // Send to our server
         this.$store.dispatch("submitPayment", request);
       }
+    },
+
+    validate() {
+      this.clearCardErrors();
+      let valid = true;
+      if (!this.name) {
+        valid = false;
+        this.nameErrorCheck = "Please enter a name";
+      }
+      if (!this.email) {
+        valid = false;
+        this.emailErrorCheck = "Please provide an email address";
+      }
+
+      if (!this.cardName) {
+        valid = false;
+        this.cardNameErrorCheck = "Card Name cannot be empty";
+      }
+      if (!this.card.exp_year) {
+        valid = false;
+        this.expyearErrorCheck = "Exp year cannot be empty";
+      }
+      // billing info
+      if (!this.card.exp_month) {
+        valid = false;
+        this.expmonErrorCheck = "Exp month cannot be empty";
+      }
+      if (!this.card.number) {
+        valid = false;
+        this.cardNumberErrorCheck = "Card number cannot be empty";
+      }
+      if (!this.card.cvc) {
+        valid = false;
+        this.cvvErrorCheck = "Security cvv cannot be empty";
+      }
+      if (!this.address.line1) {
+        valid = false;
+        this.addressErrorCheck = "Address cannot be empty";
+      }
+      if (!this.address.county) {
+        valid = false;
+        this.cityErrorCheck = "County cannot be empty";
+      }
+      if (!this.address.eircode) {
+        valid = false;
+        this.eircodeErrorCheck = "Eircode cannot be empty";
+      }
+      if (valid) {
+        this.createToken();
+      }
+    },
+    clearCardErrors() {
+      (this.emailErrorCheck = null),
+        (this.cardNameErrorCheck = null),
+        (this.addressErrorCheck = null),
+        (this.cvvErrorCheck = null),
+        (this.cardNumberErrorCheck = null),
+        (this.expmonErrorCheck = null),
+        (this.countyError = null),
+        (this.eircodeError = null),
+        (this.expyearErrorCheck = null);
+      this.nameErrorCheck = null;
     },
   },
 
@@ -229,6 +372,7 @@ export default {
 <style scoped>
 .wrapper {
   max-width: 1500px;
+  margin: 0 auto;
 }
 
 /* this class was taken from W3 schools */
@@ -288,7 +432,7 @@ label {
 }
 
 #checkout-button:hover {
-  background-color: #2c2722;
+  background-color: #2d2d2d;
 }
 
 input[type="text"] {
@@ -296,7 +440,7 @@ input[type="text"] {
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
-  border: 1px solid #ccc;
+  border: 1px solid rgb(0, 0, 0);
   background-color: white;
   box-sizing: border-box;
   font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
@@ -305,6 +449,15 @@ input[type="text"] {
 span.price {
   float: right;
   color: grey;
+}
+
+div[aria-required="true"].v-text-field .v-label::after {
+  content: " *";
+  color: red;
+}
+
+.help {
+  color: red;
 }
 
 /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other (and change the direction - make the "cart" column go on top) */

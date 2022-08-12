@@ -4,9 +4,9 @@
       class="container center"
       v-if="this.$store.state.userRole == 'user' && this.$store.state.signedIn == true"
     >
-      <div id="name">
+      <!-- <div id="name">
         <h1>{{ Profile.name }}</h1>
-      </div>
+      </div> -->
 
       <div id="profile">
         <Profile v-bind:profile="Profile" />

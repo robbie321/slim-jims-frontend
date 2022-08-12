@@ -141,19 +141,19 @@ export default new Vuex.Store({
     //set loading and clear errors
       commit("setLoading", true);
       commit("clearError");
-      let success = false;
+      let status = false;
 
       //backend call to register route
-      axios.post('http://localhost:3000/users/register', payload)
+      axios.post('http://localhost:3000/auth/register', payload)
       .then(res => {
 
         //get status of regristration
-        success = res.data.successStatus;
+        status = res.data.successStatus;
 
         //log status
-        console.log("Status",success)
+        console.log("Status",status)
 
-        if(success){
+        if(status){
           //sign user in
           this.dispatch('signUserIn', {
             email: payload.email,
@@ -164,8 +164,8 @@ export default new Vuex.Store({
           commit("setLoading", false);
           router.push('/')
         }else{
-          let payload = 'Incomplete form, please try again'
-          commit("setError", payload);
+
+          commit("setError",res.data.message);
         }
 
       })
@@ -197,18 +197,18 @@ export default new Vuex.Store({
      * ######
      */
      logout({commit}){
-      // localStorage.removeItem("session");
-      // localStorage.removeItem("vuex");
-      //clear session
+      localStorage.removeItem("session");
+      sessionStorage.removeItem("vuex");
+      // clear session
       // sessionStorage.removeItem('vuex')
-      let t = sessionStorage.getItem('vuex')
-      console.log(t);
-      sessionStorage.setItem('vuex', '');
+      // let t = sessionStorage.getItem('vuex')
+      // console.log(t);
+      // sessionStorage.setItem('vuex', '');
 
       //set signedIn to false
       commit('setSignIn', false);
-        //push to homepage
-        // router.push("/signIn")
+        // push to homepage
+        router.push("/")
     },
 
     /**
@@ -247,6 +247,7 @@ export default new Vuex.Store({
       .then(() => {
         commit("setLoading", false);
         this.dispatch('loadProducts')
+        router.push("/")
       })
       .catch(error => {
         commit("setLoading", false);
@@ -274,12 +275,21 @@ export default new Vuex.Store({
       };
      axios.post("https://warm-plateau-20209.herokuapp.com/payment", payload, config)
       .then( async (res) => {
+        console.log("Payload", payload)
+        console.log("HERE",res)
         if(res.data.charge.status == 'succeeded'){
           //create an order
-          this.dispatch('createOrder');
+          await this.dispatch('createOrder', payload.amount);
+
+          await router.push("/profile")
+
+          alert("You're order has been confirmed");
 
         }else{
-          console.log("Failed", res.data);
+          // console.log("Failed");
+
+          commit("setError", res.data)
+          // console.log("Failed", res.data);
         }
       })
     },
@@ -372,34 +382,25 @@ export default new Vuex.Store({
      * CREATE AN ORDERS
      * #######################
      */
-      createOrder({commit}){
+      createOrder({commit},payload){
+
+        let totalCost = payload;
+        commit("setLoading", true);
         const config = {
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Authorization': `Bearer ${this.state.token}`
           }
         };
-        commit("setLoading", true);
-
         const items = this.getters.loadCart;
 
-        console.log(items);
-
-
         axios.post("http://localhost:3000/orders/createOrder",
-          {items}, config
+          {items,totalCost}, config
         ).then(res => {
           console.log(res.data);
         })
-
         commit("setLoading", false);
-
       },
-
-
-      error({commit}, payload){
-
-      }
 
   },
 

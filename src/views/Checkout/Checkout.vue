@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 style="text-align: center; padding-bottom: 25px">Checkout</h1>
+    <h1 style="text-align: center; padding-bottom: 25px">CHECKOUT</h1>
     <CheckoutForm />
   </div>
 </template>

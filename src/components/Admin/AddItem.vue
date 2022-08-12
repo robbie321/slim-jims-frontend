@@ -12,8 +12,10 @@
               <p>Buyers need these details to find your item</p>
 
               <input placeholder="Item name" type="text" v-model="name" dense outlined required />
+              <span class="help" v-if="nameErrorCheck">{{ nameErrorCheck }}</span>
 
               <input placeholder="price" type="number" v-model="price" dense outlined required />
+              <span class="help" v-if="priceErrorCheck">{{ priceErrorCheck }}</span>
 
               <input
                 placeholder="Stock availability"
@@ -23,6 +25,7 @@
                 outlined
                 required
               />
+              <span class="help" v-if="stockErrorCheck">{{ stockErrorCheck }}</span>
             </div>
           </div>
 
@@ -52,7 +55,7 @@
           </div>
 
           <div class="end">
-            <v-btn @click.prevent="post" dark>Add new item</v-btn>
+            <v-btn @click.prevent="validate" dark>Add new item</v-btn>
           </div>
         </v-form>
         <br />
@@ -77,6 +80,10 @@ export default {
       ],
       image: [(v) => !!v || "This field cannot be left blank"],
     },
+
+    nameErrorCheck: null,
+    priceErrorCheck: null,
+    stockErrorCheck: null,
   }),
   beforeCreate() {
     // return this.$store.dispatch("session");
@@ -103,6 +110,34 @@ export default {
     },
   },
   methods: {
+    validate() {
+      this.clearCardErrors();
+      let valid = true;
+
+      if (!this.price) {
+        valid = false;
+        this.priceErrorCheck = "price cannot be empty";
+      }
+
+      // billing info
+      if (!this.stockQuantity) {
+        valid = false;
+        this.stockErrorCheck = "Stock cannot be empty";
+      }
+      if (!this.name) {
+        valid = false;
+        this.nameErrorCheck = "Name cannot be empty";
+      }
+
+      if (valid) {
+        this.post();
+      }
+    },
+    clearCardErrors() {
+      this.nameErrorCheck = null;
+      this.priceErrorCheck = null;
+      this.stockErrorCheck = null;
+    },
     uploadFile(e) {
       console.log(e.target.files);
       this.images = e.target.files;
@@ -156,5 +191,9 @@ export default {
 input[type="file"] {
   display: none;
   font-size: 25px;
+}
+
+.help {
+  color: red;
 }
 </style>

@@ -1,6 +1,9 @@
 <template>
   <div>
     <div class="container">
+      <v-alert v-show="error" dismissible prominent shaped type="error" style="margin-top: 20px">{{
+        error
+      }}</v-alert>
       <h1 style="text-align: center">CREATE ACCOUNT</h1>
 
       <hr />
@@ -10,6 +13,7 @@
         </div>
 
         <input class="input" placeholder="Full name" v-model="name" type="text" />
+        <span class="help is-danger" v-if="nameErrorCheck">{{ nameErrorCheck }}</span>
 
         <input class="input" type="text" v-model="email" placeholder="Email" />
         <span class="help is-danger" v-if="emailErrorCheck">{{ emailErrorCheck }}</span>
@@ -63,12 +67,6 @@
             >Create account & sign in</v-btn
           >
         </div>
-
-        <div>
-          <h6>
-            Already a member? <a href="/signIn"><span style="color: #009c75"> Log in</span></a>
-          </h6>
-        </div>
       </div>
       <div class="reset"></div>
       <div></div>
@@ -87,41 +85,6 @@ export default {
     addressOne: "",
     addressTwo: "",
     county: "",
-    county2: [
-      "Antrim",
-      "Armagh",
-      "Carlow",
-      "Cavan",
-      "Clare",
-      "Cork",
-      "Derry",
-      "Donegal",
-      "Down",
-      "Dublin",
-      "Fermanagh",
-      "Galway",
-      "Kerry",
-      "Kildare",
-      "Kilkenny",
-      "Laois",
-      "Leitrim",
-      "Limerick",
-      "LondonDerry",
-      "Longford",
-      "Louth",
-      "Mayo",
-      "Meath",
-      "Monoghan",
-      "Offaly",
-      "Roscommon",
-      "Sligo",
-      "Tipperary",
-      "Tyrone",
-      "Waterford",
-      "Westmeath",
-      "Wexford",
-      "Wicklow",
-    ],
     eircode: "",
     mobile: "",
     rules: {
@@ -150,15 +113,37 @@ export default {
     nameErrorCheck: null,
   }),
 
+  beforeCreate() {
+    this.$store.state.error = null;
+  },
+
+  computed: {
+    error() {
+      return (this.err = this.$store.getters.error);
+    },
+  },
+
   methods: {
     validate() {
       this.clearCardErrors();
       let valid = true;
+      if (!this.name) {
+        valid = false;
+        this.nameErrorCheck = "Please enter a name";
+      }
       if (!this.email) {
         valid = false;
         this.emailErrorCheck = "Please provide an email address";
       }
 
+      if (!this.password) {
+        valid = false;
+        this.passwordErrorCheck = "Password cannot be blank";
+      }
+      if (!this.confirmPassword) {
+        valid = false;
+        this.confirmPasswordErrorCheck = "Password cannot be blank";
+      }
       // billing info
       if (!this.addressOne) {
         valid = false;
@@ -291,6 +276,10 @@ span.psw {
 
 div[aria-required="true"].v-text-field .v-label::after {
   content: " *";
+  color: red;
+}
+
+.help {
   color: red;
 }
 </style>

@@ -1,10 +1,14 @@
 <template>
   <div>
     <div class="col-25">
+      <!-- banner for ads -->
+      <AdBanner />
       <div class="container">
+        <!-- if a user is not signed in, display this -->
         <div v-if="!this.$store.state.signedIn">
           <h3 class="text">Please sign in to view your shopping cart</h3>
         </div>
+        <!-- otherwise show the cart -->
         <div v-else>
           <h4 class="primary-txt">
             Cart items
@@ -13,20 +17,24 @@
               <b class="primary-txt" id="cartNo">{{ CartItems.length - 1 }}</b>
             </span>
           </h4>
+          <!-- loop through the items in the cart and display the name and price -->
           <div id="cart-items" class="row" v-for="item in CartItems" :key="item.itemid">
             <div class="col-50">{{ item.name }}</div>
             <div class="col-50" style="text-align: right">€{{ item.price }}</div>
           </div>
 
           <hr />
+          <!-- calculate the cart total -->
           <p>
             Total
             <span class="price" id="total" style="color: black"
               ><b>€{{ CartTotal() }}</b></span
             >
           </p>
-
-          <v-btn class="checkoutBtn" to="/checkout" color="black" dark>Proceed to checkout</v-btn>
+          <!-- go to the checkout -->
+          <v-btn class="checkoutBtn" :disabled="CartTotal() == 0" to="/checkout" color="black" dark
+            >Proceed to checkout</v-btn
+          >
         </div>
       </div>
     </div>
@@ -35,9 +43,7 @@
 
 <script>
 export default {
-  data: () => ({
-    items: [],
-  }),
+  data: () => ({}),
   computed: {
     CartItems() {
       return this.$store.getters.loadCart;
@@ -73,6 +79,7 @@ export default {
   /* flex */
   flex-grow: 1;
 }
+
 /* this class was taken from W3 schools */
 /* https://www.w3schools.com/howto/howto_css_checkout_form.asp */
 .row {
@@ -100,10 +107,9 @@ export default {
 }
 
 .container {
-  margin-top: 10px;
-  background-color: #f2f2f2;
+  margin-top: 20px;
+  background-color: #ffffff;
   padding: 5px 20px 15px 20px;
-  border: 1px solid #000000;
   border-radius: 3px;
   font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
 }

@@ -2,22 +2,32 @@
   <v-app class="container">
     <div class="nav-container hidden-on-xs">
       <div class="inline">
-        <v-btn
-          class="nav-buttons"
-          text
-          v-for="item in menuItems"
-          :key="item.id"
-          router
-          :to="item.link"
-          dark
-        >
-          {{ item.title }}
-        </v-btn>
+        <img src="../src/assets/logo.png" width="15%" alt="" />
+
+        <div class="inline vertically-align" style="float: right">
+          <div style="float: right" v-if="signedIn">
+            <v-btn class="mx-2 nav-buttons" dark color="#cd9bf0" @click="logout()">Logout</v-btn>
+          </div>
+          <div style="float: right" v-if="!signedIn">
+            <v-btn class="mx-2 nav-buttons" dark color="#cd9bf0" to="/signIn">Login</v-btn>
+          </div>
+          <v-btn
+            class="mx-2 nav-buttons"
+            text
+            v-for="item in menuItems"
+            :key="item.id"
+            router
+            :to="item.link"
+            dark
+          >
+            {{ item.title }}
+          </v-btn>
+        </div>
       </div>
     </div>
 
     <v-bottom-navigation class="hidden-on-xl" fixed>
-      <v-btn text v-for="item in menuItems" dark :key="item.id" router :to="item.link">
+      <v-btn text v-for="item in bottomMenuItems" dark :key="item.id" router :to="item.link">
         <span>
           <v-icon>mdi-{{ item.icon }}</v-icon>
         </span>
@@ -46,16 +56,14 @@ export default Vue.extend({
 
     menuItems() {
       let menuItems = [
-        { icon: "lock", title: "login", link: "/signIn" },
+        // { icon: "lock", title: "login", link: "/signIn" },
         { icon: "lock", title: "Shop", link: "/" },
       ];
 
       if (this.signedIn && this.userRole == "user") {
         menuItems = [
-          { icon: "home", title: "SHOP", link: "/" },
-          { icon: "cart", title: "Cart", link: "/cart" },
+          { icon: "home", title: "Shop", link: "/" },
           { icon: "face-man-profile", title: "Profile", link: "/profile" },
-          { icon: "logout", title: "logout", link: "/logout" },
         ];
       }
 
@@ -63,14 +71,36 @@ export default Vue.extend({
         menuItems = [
           { icon: "home", title: "Home", link: "/" },
           { icon: "donate", title: "Add Item", link: "/addItem" },
-          { icon: "chevron-up", title: "Upcycle", link: "/upcycle-choice" },
-          { icon: "store", title: "Shop", link: "/marketplace" },
-          // { icon: "user-tie", title: "Profile", link: "/profile" },
-          { icon: "address-card", title: "Admin Portal", link: "/AdminPortal" },
         ];
       }
 
       return menuItems;
+    },
+    bottomMenuItems() {
+      let bottomMenuItems = [
+        { icon: "lock", title: "login", link: "/signIn" },
+        { icon: "lock", title: "Shop", link: "/" },
+      ];
+
+      if (this.signedIn && this.userRole == "user") {
+        bottomMenuItems = [
+          { icon: "home", title: "Shop", link: "/" },
+          { icon: "cart", title: "Cart", link: "/cart" },
+          { icon: "face-man-profile", title: "Profile", link: "/profile" },
+          { icon: "logout", title: "logout", link: "/logout" },
+        ];
+      }
+
+      if (this.signedIn && this.userRole == "admin") {
+        bottomMenuItems = [
+          { icon: "home", title: "Home", link: "/" },
+          { icon: "donate", title: "Add Item", link: "/addItem" },
+          { icon: "cart", title: "Cart", link: "/cart" },
+          { icon: "logout", title: "logout", link: "/logout" },
+        ];
+      }
+
+      return bottomMenuItems;
     },
     userRole() {
       return this.$store.state.userRole;
@@ -119,16 +149,8 @@ input[type="file"] {
   visibility: hidden;
 }
 
-@media screen and (min-width: 768px) {
-  .hide-on-lg {
-    display: none;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .hidden-on-xl {
-    visibility: visible;
-  }
+.hide-banner-xl {
+  display: none;
 }
 
 .hidden-on-xs {
@@ -138,12 +160,22 @@ input[type="file"] {
   visibility: show;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 820px) {
+  .hidden-on-xl {
+    visibility: visible;
+  }
+
+  .hide-banner-xl {
+    visibility: show;
+    display: initial;
+  }
+
   .hidden-on-xs {
     display: none;
     visibility: hidden;
   }
 }
+
 .inline {
   display: inline-block;
 }
@@ -155,7 +187,7 @@ input[type="file"] {
 }
 .nav-buttons {
   float: right;
-  height: 25px;
+  height: 45px !important;
 }
 
 .icon {

@@ -1,8 +1,10 @@
 <template>
   <div class="container">
     <div class="left">
+      <div class="hide-banner-xl">
+        <AdBanner />
+      </div>
       <DisplayItems v-bind:products="Products" />
-      <!-- <v-btn @click="loadMoreProducts()">Load more</v-btn> -->
     </div>
     <div class="right">
       <ShoppingCart />
@@ -27,14 +29,15 @@ export default {
 
 <style scoped>
 .container {
-  width: 100%;
+  width: 90%;
   height: 100%;
+  margin: 0 auto;
   /* flex */
   display: flex;
 }
 .left,
 .right {
-  border: 1px solid #000;
+  /* border: 1px solid #000; */
   overflow: hidden;
 }
 .left {
@@ -42,7 +45,6 @@ export default {
   width: 65%;
 }
 .right {
-  /* background: blue; */
   /* flex */
   flex-grow: 1;
 }
